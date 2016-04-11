@@ -6,9 +6,12 @@
 	  var canvas;
 	  var context;
 	  var circles = [];
+	  var timer;
 	  function Circle(x, y, color) {
 		this.x = x;
 		this.y = y;
+		this.dx = Math.random()*4-2;
+		this.dy = Math.random()*4-2;
 		this.color = color;
 	  }
       function init() {
@@ -21,6 +24,7 @@
 		canvas.onclick = function(event) {
 			handleClick(event.clientX, event.clientY);
 		};
+		timer = setInterval(resizeCanvas, 20);
       }
 	  function handleClick(x, y) {
 	     var found = false;
@@ -46,6 +50,12 @@
 		 context.arc(circle.x, circle.y, 30, 0, degreesToRadians(360), true);
 		 context.fillStyle = circle.color;
 		 context.fill();
+		 if (circle.x + circle.dx > canvas.width || circle.x + circle.dx < 0)
+			circle.dx = -circle.dx;
+		 if (circle.y + circle.dy > canvas.height || circle.y + circle.dy < 0)
+			circle.dy = -circle.dy;
+		 circle.x += circle.dx;
+		 circle.y += circle.dy;
 	  }
       function resizeCanvas() {
         canvas.width = window.innerWidth;
